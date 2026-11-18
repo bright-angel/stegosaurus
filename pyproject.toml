@@ -1,0 +1,64 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "stegosaurus"
+version = "2.0.0"
+description = "Steganography for CPython bytecode: embed payloads inside .pyc files without changing file size or runtime behaviour."
+readme = "README.md"
+requires-python = ">=3.8"
+license = { file = "LICENSE" }
+authors = [{ name = "Stegosaurus contributors" }]
+keywords = ["steganography", "bytecode", "pyc", "cpython", "security"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "License :: OSI Approved :: ISC License (ISCL)",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Security",
+    "Topic :: Software Development :: Build Tools",
+]
+dependencies = []
+
+[project.scripts]
+stegosaurus = "stegosaurus.cli:main"
+
+[project.urls]
+"Original project" = "https://github.com/AngelKitty/stegosaurus"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+    "ruff>=0.6",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/stegosaurus"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+markers = [
+    "interop: cross-validation against the upstream reference implementation",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py38"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B"]
+ignore = ["UP006", "UP007", "UP035", "UP045"]
+
+[tool.ruff.lint.per-file-ignores]
+"scripts/_probe.py" = ["E402"]
+"tests/_upstream.py" = ["E402"]
+"tests/*" = ["B011"]
